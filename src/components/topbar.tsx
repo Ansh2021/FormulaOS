@@ -1,6 +1,5 @@
 // import { ShaderGradientCanvas, ShaderGradient } from "@shadergradient/react";
 import { useEffect, useRef, useState } from "react";
-import { Input } from "./ui/input";
 import { Wifi, Volume2, BatteryFull } from "lucide-react";
 
 const TOPBAR_HEIGHT = "2rem";
@@ -9,7 +8,7 @@ export default function Topbar() {
   // const gradientURL =
   //   "https://shadergradient.co/customize?animate=on&axesHelper=off&bgColor1=%23000000&bgColor2=%23000000&brightness=1&cAzimuthAngle=180&cDistance=2.8&cPolarAngle=80&cameraZoom=9.1&color1=%23606080&color2=%23111827&color3=%23212121&destination=onCanvas&embedMode=off&envPreset=city&format=gif&fov=45&frameRate=10&gizmoHelper=hide&grain=off&lightType=3d&pixelDensity=1&positionX=0&positionY=0&positionZ=0&range=disabled&rangeEnd=40&rangeStart=0&reflection=0.1&rotationX=50&rotationY=0&rotationZ=0&shader=defaults&type=waterPlane&uAmplitude=0&uDensity=0.8&uFrequency=0&uSpeed=0.3&uStrength=1.4&uTime=8&wireframe=false";
 
-  const [searchInput, setSearchInput] = useState("");
+  // const [searchInput, setSearchInput] = useState("");
   const [date, setDate] = useState(new Date().toLocaleDateString());
   const [time, setTime] = useState(new Date().toLocaleTimeString());
   const timeDateRef = useRef<number>(0);
@@ -25,7 +24,7 @@ export default function Topbar() {
     return () => cancelAnimationFrame(timeDateRef.current);
   }, []);
 
-  const apps: string[] = ["Notes", "Calculator", "Terminal"];
+  // const apps: string[] = ["Notes", "Calculator", "Terminal"];
 
   //TODO: think about making the whole topbar expand heightwise when searching instead of making a separate one
   return (
