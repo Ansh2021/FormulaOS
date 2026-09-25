@@ -12,9 +12,9 @@ export default function Clock() {
       hour: "numeric",
     }).resolvedOptions();
     setIs12Hour(dateFormatter.hour12 as boolean);
-    const interval = setInterval(() => setTime(new Date()), 1000);
+    const interval = requestAnimationFrame(() => setTime(new Date()));
 
-    return () => clearInterval(interval);
+    return () => cancelAnimationFrame(interval);
   }, []);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -72,8 +72,8 @@ export default function Clock() {
       ctx.lineCap = "round";
       ctx.moveTo(canvas.width / 2, canvas.height / 2);
       ctx.lineTo(
-        canvas.width / 2 + 30 * Math.cos(hourHandAngle),
-        canvas.height / 2 + 30 * Math.sin(hourHandAngle),
+        canvas.width / 2 + 29 * Math.cos(hourHandAngle),
+        canvas.height / 2 + 29 * Math.sin(hourHandAngle),
       );
       ctx.stroke();
 
@@ -84,8 +84,8 @@ export default function Clock() {
       ctx.lineCap = "round";
       ctx.moveTo(canvas.width / 2, canvas.height / 2);
       ctx.lineTo(
-        canvas.width / 2 + 34 * Math.cos(minuteHandAngle),
-        canvas.height / 2 + 34 * Math.sin(minuteHandAngle),
+        canvas.width / 2 + 36 * Math.cos(minuteHandAngle),
+        canvas.height / 2 + 36 * Math.sin(minuteHandAngle),
       );
       ctx.stroke();
 
@@ -95,8 +95,8 @@ export default function Clock() {
       ctx.lineCap = "round";
       ctx.moveTo(canvas.width / 2, canvas.height / 2);
       ctx.lineTo(
-        canvas.width / 2 + 37 * Math.cos(secondHandAngle),
-        canvas.height / 2 + 37 * Math.sin(secondHandAngle),
+        canvas.width / 2 + 42 * Math.cos(secondHandAngle),
+        canvas.height / 2 + 42 * Math.sin(secondHandAngle),
       );
       ctx.stroke();
 

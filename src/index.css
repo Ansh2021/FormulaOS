@@ -2,8 +2,10 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark
+  (&: is(.dark *));
 
 /* :root {
   --text: #6b6375;
@@ -185,6 +187,11 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.terminal-text {
+  font-family: "JetBrains Mono Variable", monospace;
+  font-weight: 400;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -208,6 +215,15 @@ body {
     border-radius: 9999px;
   }
   &::-webkit-scrollbar-button {
+    display: none;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
     display: none;
   }
 }

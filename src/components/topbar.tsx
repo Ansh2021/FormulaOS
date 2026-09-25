@@ -1,5 +1,5 @@
 // import { ShaderGradientCanvas, ShaderGradient } from "@shadergradient/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { Wifi, Volume2, BatteryFull } from "lucide-react";
 
@@ -12,51 +12,73 @@ export default function Topbar() {
   const [searchInput, setSearchInput] = useState("");
   const [date, setDate] = useState(new Date().toLocaleDateString());
   const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const timeDateRef = useRef<number>(0);
   useEffect(() => {
-    const interval = setInterval(() => {
+    function updateTime() {
       setDate(new Date().toLocaleDateString());
       setTime(new Date().toLocaleTimeString());
-    }, 1000);
 
-    return () => clearInterval(interval);
+      timeDateRef.current = requestAnimationFrame(updateTime);
+    }
+
+    updateTime();
+    return () => cancelAnimationFrame(timeDateRef.current);
   }, []);
+
+  const apps: string[] = ["Notes", "Calculator", "Terminal"];
 
   //TODO: think about making the whole topbar expand heightwise when searching instead of making a separate one
   return (
-    <>
-      <div
-        style={{ "--topbar-height": TOPBAR_HEIGHT } as React.CSSProperties}
-        className="flex flex-row fixed top-3 z-30 backdrop-blur-md justify-center items-center min-w-[200px] w-[25vw] h-(--topbar-height) bg-gray-900/60 border border-gray-500 rounded-xl"
-      >
-        <Input
-          placeholder="Search..."
-          style={{ "--input-height": TOPBAR_HEIGHT } as React.CSSProperties}
-          autoComplete="off"
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          className="peer fixed top-0 right-0 z-3 justify-center items-center transition-[width,border-radius] duration-[400ms,300ms] focus:delay-[0ms,400ms] not-focus:delay-[500ms,100ms] ease-in-out w-[10vw] max-w-[400px] focus:w-[25vw] focus:max-w-full h-[calc(var(--input-height)-0.125rem)] rounded-xl bg-gray-800/80 focus:bg-gray-800/70 text-[#f4f3f2] backdrop-blur-md not-focus:rounded-2xl not-focus:border-none focus:rounded-none focus:rounded-t-2xl border border-b-gray-500"
-        />
-        <p className="fixed left-5 text-[#f4f3f2] transition-all duration-300 peer-not-focus:delay-[900ms] ease-in-out scale-100 peer-focus:scale-0">
-          FormulaOS
-        </p>
-        <div
-          style={{ "--input-height": TOPBAR_HEIGHT } as React.CSSProperties}
-          className="fixed top-0 left-0 z-2 overflow-clip transition-[height,scale] duration-[500ms,0ms] peer-focus:delay-[400ms,400ms] peer-not-focus:delay-[0ms,400ms] ease-in-out h-[calc(var(--input-height)-0.125rem)] peer-focus:h-[20vh] peer-focus:max-h-[calc(5*(var(--input-height)-0.125rem))] w-full text-[#f4f3f2] scale-0 peer-focus:scale-100 rounded-xl bg-gray-800"
-        >
-          <div
-            style={{ "--input-height": TOPBAR_HEIGHT } as React.CSSProperties}
-            className="fixed top-[calc(var(--input-height)-0.125rem+0.5rem)] pl-4 pr-4"
-          >
-            {/* TODO: Replace placeholder text*/}
-            No apps found
-          </div>
-        </div>
+    // <>
+    //   <div
+    //     style={{ "--topbar-height": TOPBAR_HEIGHT } as React.CSSProperties}
+    //     className="flex flex-row fixed top-3 z-30 backdrop-blur-md justify-center items-center min-w-[200px] w-[25vw] h-(--topbar-height) bg-gray-900/60 border border-gray-500 rounded-xl"
+    //   >
+    //     <Input
+    //       placeholder="Search..."
+    //       style={{ "--input-height": TOPBAR_HEIGHT } as React.CSSProperties}
+    //       autoComplete="off"
+    //       type="text"
+    //       value={searchInput}
+    //       onChange={(e) => setSearchInput(e.target.value)}
+    //       className="peer fixed top-0 right-0 z-3 justify-center items-center transition-[width,border-radius] duration-[400ms,300ms] focus:delay-[0ms,400ms] not-focus:delay-[500ms,100ms] ease-in-out w-[10vw] max-w-[400px] focus:w-[25vw] focus:max-w-full h-[calc(var(--input-height)-0.125rem)] rounded-xl bg-gray-800/80 focus:bg-gray-800/70 text-[#f4f3f2] backdrop-blur-md not-focus:rounded-2xl not-focus:border-none focus:rounded-none focus:rounded-t-2xl border border-b-gray-500"
+    //     />
+    //     <p className="fixed left-5 text-[#f4f3f2] transition-all duration-300 peer-not-focus:delay-[900ms] ease-in-out scale-100 peer-focus:scale-0">
+    //       FormulaOS
+    //     </p>
+    //     <div
+    //       style={{ "--input-height": TOPBAR_HEIGHT } as React.CSSProperties}
+    //       className="fixed top-0 left-0 z-2 overflow-clip transition-[height,scale] duration-[500ms,0ms] peer-focus:delay-[400ms,400ms] peer-not-focus:delay-[0ms,400ms] ease-in-out h-[calc(var(--input-height)-0.125rem)] peer-focus:h-[20vh] peer-focus:max-h-[calc(5*(var(--input-height)-0.125rem))] w-full text-[#f4f3f2] scale-0 peer-focus:scale-100 rounded-xl bg-gray-800"
+    //     >
+    //       <div
+    //         style={{ "--input-height": TOPBAR_HEIGHT } as React.CSSProperties}
+    //         className="flex flex-col justify-center items-center fixed top-[calc(var(--input-height)-0.125rem+0.5rem)] pl-4 pr-4"
+    //       >
+    //         {/* TODO: Replace placeholder text*/}
+    //         {apps.map((item) => (
+    //           <button className="w-full hover:bg-gray-900 p-0.5 rounded-2xl transition-colors duration-300 ease-in-out">
+    //             {item}
+    //           </button>
+    //         ))}
+    //       </div>
+    //     </div>
 
-        {/* <ShaderGradientCanvas>
-        <ShaderGradient control="query" urlString={gradientURL} />
-      </ShaderGradientCanvas> */}
-      </div>
+    //     {/* <ShaderGradientCanvas>
+    //     <ShaderGradient control="query" urlString={gradientURL} />
+    //   </ShaderGradientCanvas> */}
+    //   </div>
+    //   <div
+    //     style={{ "--topbar-height": TOPBAR_HEIGHT } as React.CSSProperties}
+    //     className="flex flex-row  gap-1 fixed top-3 right-10 z-30 backdrop-blur-md justify-center items-center h-(--topbar-height) w-[25dw] min-w-[250px] max-w-[400px] bg-gray-900/60 border border-gray-500 rounded-xl"
+    //   >
+    //     <Wifi className="text-[#f4f3f2] scale-70" />
+    //     <Volume2 className="text-[#f4f3f2] scale-70" />
+    //     <BatteryFull className="text-[#f4f3f2] scale-70" />
+    //     <p className="text-[#f4f3f2] text-sm">{date}</p>
+    //     <p className="text-[#f4f3f2] text-sm">{time}</p>
+    //   </div>
+    // </>
+    <>
       <div
         style={{ "--topbar-height": TOPBAR_HEIGHT } as React.CSSProperties}
         className="flex flex-row  gap-1 fixed top-3 right-10 z-30 backdrop-blur-md justify-center items-center h-(--topbar-height) w-[25dw] min-w-[250px] max-w-[400px] bg-gray-900/60 border border-gray-500 rounded-xl"

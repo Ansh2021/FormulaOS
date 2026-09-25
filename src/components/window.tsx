@@ -9,17 +9,23 @@ export default function Window({
   title,
   children,
   startingPosition,
+  open,
+  setOpen,
   id,
   windowOrder,
   setWindowOrder,
+  setOrder,
 }: {
   className: string;
   title?: string;
   children: React.ReactNode;
   startingPosition?: { x: number; y: number };
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
   windowOrder: string[];
   setWindowOrder: React.Dispatch<React.SetStateAction<string[]>>;
+  setOrder: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const [curPosition, setCurPosition] = useState({
     x: startingPosition?.x ? startingPosition!.x : 0,
@@ -28,7 +34,6 @@ export default function Window({
   const currentlyDragging = useRef(false);
   const dragOffset = useRef({ x: 0, y: 0 });
 
-  //   const [focus, setFocus] = useState(true);
   const [currentZ, setCurrentZ] = useState(windowOrder.indexOf(id) + 10);
 
   const [closeWindow, setCloseWindow] = useState(false);
@@ -69,16 +74,20 @@ export default function Window({
         const others = prev.filter((item) => item !== id);
         return [...others, id];
       });
+      setOrder((prev) => {
+        const others = prev.filter((item) => item !== title?.toLowerCase());
+        return [...others, title!.toLowerCase()];
+      });
     });
   };
 
   useEffect(() => {
     setCurrentZ(windowOrder.indexOf(id) + 10);
-  }, [windowOrder]);
+  }, [windowOrder, id]);
 
   return (
     <AnimatePresence>
-      {!closeWindow && (
+      {open && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -108,16 +117,13 @@ export default function Window({
             <div className="absolute left-3 top-3.25 flex flex-row h-fit w-fit gap-1">
               <Button
                 onPointerDown={(e) => e.stopPropagation()}
-                onClick={() => setCloseWindow(true)}
+                onClick={() => setOpen((prev) => !prev)}
               >
                 <div className="w-3 h-3 bg-[hsl(0,80%,71%)] rounded-full cursor-pointer"></div>
               </Button>
               <Button
                 onPointerDown={(e) => e.stopPropagation()}
-                onClick={() => {
-                  //   console.log(currentZ);
-                  //   console.log("id", id);
-                }}
+                onClick={() => setMinimizeWindow(true)}
               >
                 <div className="w-3 h-3 bg-[hsl(53,80%,71%)] rounded-full cursor-pointer"></div>
               </Button>

@@ -1,51 +1,30 @@
 import Window from "@/components/window";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronLeft, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 //TODO: have a last updated indicator
 export default function Notes({
   startingPosition,
+  notesOpen,
+  setNotesOpen,
   id,
   windowOrder,
   setWindowOrder,
+  setNotesOrder,
 }: {
   startingPosition: { x: number; y: number };
+  notesOpen: boolean;
+  setNotesOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
   windowOrder: string[];
   setWindowOrder: React.Dispatch<React.SetStateAction<string[]>>;
+  setNotesOrder: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const [selectedNoteIndex, setSelectedNoteIndex] = useState<number>(0);
   const [noteContents, setNoteContents] = useState<
     { title: string; content: string }[]
-  >([
-    // { title: "test", content: "lorem" },
-    // {
-    //   title: "test2",
-    //   content:
-    //     "ehofiwae fpaioehfpaewoifh aewaeh fpioaewh fweihfa pfioawhefpaewihf aewphf pa fihaewpfiohaew p",
-    // },
-    // {
-    //   title: "test2",
-    //   content:
-    //     "ehofiwae fpaioehfpaewoifh aewaeh fpioaewh fweihfa pfioawhefpaewihf aewphf pa fihaewpfiohaew p",
-    // },
-    // {
-    //   title: "test2",
-    //   content:
-    //     "ehofiwae fpaioehfpaewoifh aewaeh fpioaewh fweihfa pfioawhefpaewihf aewphf pa fihaewpfiohaew p",
-    // },
-    // {
-    //   title: "test2",
-    //   content:
-    //     "ehofiwae fpaioehfpaewoifh aewaeh fpioaewh fweihfa pfioawhefpaewihf aewphf pa fihaewpfiohaew p",
-    // },
-    // {
-    //   title: "test2",
-    //   content:
-    //     "ehofiwae fpaioehfpaewoifh aewaeh fpioaewh fweihfa pfioawhefpaewihf aewphf pa fihaewpfiohaew p",
-    // },
-  ]);
+  >([]);
   const [singleNoteContent, setSingleNoteContent] = useState<string>(
     noteContents[selectedNoteIndex]?.content || "",
   );
@@ -58,7 +37,6 @@ export default function Notes({
     const title = !singleNoteContent.split("\n")[0].trim()
       ? "Untitled"
       : singleNoteContent.split("\n")[0];
-    // const content = singleNoteContent.split("\n").slice(0).join("\n");
     setNoteContents((prev) =>
       prev.map((item, index) =>
         index === selectedNoteIndex
@@ -81,9 +59,12 @@ export default function Notes({
       className="h-100 w-100"
       title="Notes"
       startingPosition={startingPosition}
+      open={notesOpen}
+      setOpen={setNotesOpen}
       id={id}
       windowOrder={windowOrder}
       setWindowOrder={setWindowOrder}
+      setOrder={setNotesOrder}
     >
       <div className="flex flex-col w-full h-full justify-center items-center">
         {showAllNotesPanel && (
@@ -112,13 +93,13 @@ export default function Notes({
               {noteContents.map((item, index) => (
                 <Button
                   key={index}
-                  className="flex flex-col bg-transparent truncate hover:bg-black/30 w-full h-fit py-3 items-start text-lg"
+                  className={`flex flex-col bg-transparent truncate hover:bg-black/30 w-full h-fit py-3 items-start text-lg`}
                   onClick={() => {
                     setShowAllNotesPanel(false);
                     setSelectedNoteIndex(index);
                   }}
                 >
-                  <p className="font-semibold">{item.title}</p>
+                  <p className={`font-semibold`}>{item.title}</p>
                   <p className="text-sm text-[#f4f3f2]/60">
                     {item.content.split("\n").slice(1).join("\n")}
                   </p>
