@@ -36,8 +36,6 @@ export default function Window({
 
   const [currentZ, setCurrentZ] = useState(windowOrder.indexOf(id) + 10);
 
-  const [closeWindow, setCloseWindow] = useState(false);
-  const [minimizeWindow, setMinimizeWindow] = useState(false);
   const [fullScreen, setFullScreen] = useState(false);
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -123,7 +121,7 @@ export default function Window({
               </Button>
               <Button
                 onPointerDown={(e) => e.stopPropagation()}
-                onClick={() => setMinimizeWindow(true)}
+                onClick={() => setOpen((prev) => !prev)}
               >
                 <div className="w-3 h-3 bg-[hsl(53,80%,71%)] rounded-full cursor-pointer"></div>
               </Button>
